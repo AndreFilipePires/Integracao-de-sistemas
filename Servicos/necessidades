@@ -1,0 +1,13 @@
+requests
+jsonschema
+jsonpath-ng
+flask
+flask-restful
+flask-graphql
+xmlschema
+grpcio
+grpcio-tools
+graphene
+protobuf
+setuptools
+tk

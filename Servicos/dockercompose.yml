@@ -1,0 +1,62 @@
+
+version: '3.8'
+
+services:
+  rest:
+    build:
+      context: ./Servicos
+      dockerfile: rest/Dockerfile
+    image: andrepires/rest:1.0
+    container_name: rest
+    volumes:
+      - jogos_data:/data
+    ports:
+      - "5001:5000"
+    networks:
+      - backend
+
+  soap:
+    build:
+      context: ./Servicos
+      dockerfile: soap/Dockerfile
+    image: andrepires/soap:1.0
+    container_name: soap
+    volumes:
+      - jogos_data:/data
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+
+  grpc:
+    build:
+      context: ./Servicos
+      dockerfile: grpc/Dockerfile
+    image: andrepires/grpc:1.0
+    container_name: grpc
+    volumes:
+      - jogos_data:/data
+    ports:
+      - "50051:50051"
+    networks:
+      - backend
+
+  graphql:
+    build:
+      context: ./Servicos
+      dockerfile: graphql/Dockerfile
+    image: andrepires/graphql:1.0
+    container_name: graphql
+    volumes:
+      - jogos_data:/data
+    ports:
+      - "4000:4000"
+    networks:
+      - backend
+
+volumes:
+  jogos_data:
+
+networks:
+  backend:
+    driver: bridge

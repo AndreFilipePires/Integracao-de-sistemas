@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+service JogoService {
+  rpc procurarJogo (JogoRequest) returns (JogoResponse);
+}
+
+message JogoRequest {
+  string titulo = 1;
+}
+
+message JogoResponse {
+  string titulo = 1;
+  string desenvolvedora = 2;
+  string publicadora = 3;
+  double preco = 4;
+}
