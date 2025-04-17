@@ -204,10 +204,10 @@ entry_preco.grid(row=3, column=1, sticky="ew")
 
 
 
-ttk.Button(frame, text="Inserir jogo (REST)", command=enviar_jogo).grid(row=4, column=0, columnspan=2, sticky="ew", pady=2)
-ttk.Button(frame, text="Modificar jogo (SOAP)", command=modificar_jogo).grid(row=5, column=0, columnspan=2, sticky="ew", pady=2)
-ttk.Button(frame, text="Procurar jogo (gRPC)", command=procurar_jogo).grid(row=6, column=0, columnspan=2, sticky="ew", pady=2)
-ttk.Button(frame, text="Eliminar jogo (GraphQL)", command=eliminar_jogo).grid(row=7, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Inserir jogo - REST", command=enviar_jogo).grid(row=4, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Modificar jogo - SOAP", command=modificar_jogo).grid(row=5, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Procurar jogo - gRPC", command=procurar_jogo).grid(row=6, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Eliminar jogo - GraphQL", command=eliminar_jogo).grid(row=7, column=0, columnspan=2, sticky="ew", pady=2)
 
 
 

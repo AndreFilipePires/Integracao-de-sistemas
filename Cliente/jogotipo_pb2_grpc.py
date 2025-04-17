@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from Servicos.grpc import jogotipo_pb2 as Servicos_dot_grpc_dot_jogotipo__pb2
+import jogotipo_pb2 as Servicos_dot_grpc_dot_jogotipo__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__

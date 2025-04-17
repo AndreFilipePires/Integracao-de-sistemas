@@ -2,14 +2,14 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY necessidades.txt .
+COPY Servicos/necessidades.txt .
 RUN pip install --no-cache-dir -r necessidades.txt
 RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. jogotipo.proto
 
-COPY gRPC/servidor_grcp.py .
-COPY gRPC/jogotipo.proto .
-COPY gRPC/jogotipo_pb2.py .
-COPY gRPC/jogotipo_pb2_grpc.py .
-COPY XML/jogos.xml ./jogos.xml
+COPY grpc/servidor_grcp.py .
+COPY grpc/jogotipo.proto .
+COPY grpc/jogotipo_pb2.py .
+COPY grpc/jogotipo_pb2_grpc.py .
+COPY Jogos/jogos.xml ./jogos.xml
 
 CMD ["python", "grpc.py"]
