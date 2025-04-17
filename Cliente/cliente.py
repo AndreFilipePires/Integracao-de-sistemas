@@ -6,14 +6,12 @@ import grpc
 import jogo_pb2
 import jogo_pb2_grpc
 
-# URLs dos serviços
+
 SOAP_URL = "http://localhost:8000/soap"
 REST_URL = "http://localhost:5001/rest"
 GRPC_HOST = "localhost"
 GRPC_PORT = 50051
 GRAPHQL_URL = "http://localhost:4000/graphql"
-
-
 
 
 
@@ -29,15 +27,11 @@ def mostrar_resposta(mensagem):
 
 
 
-
-
 def limpar_campos():
     entry_titulo.delete(0, "end")
     entry_desenvolvedora.delete(0, "end")
     entry_publicadora.delete(0, "end")
     entry_preco.delete(0, "end")
-
-
 
 
 
@@ -64,16 +58,14 @@ def enviar_jogo():
     try:
         resposta = requests.post(REST_URL, json=jogo)
         if resposta.status_code == 201:
-            mostrar_resposta(f"[REST] jogo inserido com sucesso: {jogo}")
+            mostrar_resposta(f"[REST] Jogo inserido com sucesso: {jogo}")
         else:
             erro = resposta.json().get('erro', 'Erro desconhecido')
             mostrar_resposta(f"[REST] Erro: {erro}")
     except Exception as e:
         mostrar_resposta(f"[REST] Erro de comunicação: {str(e)}")
+
     limpar_campos()
-
-
-
 
 
 
@@ -85,7 +77,7 @@ def modificar_jogo():
     preco_text = entry_preco.get().strip()
 
     if not titulo:
-        mostrar_resposta("[SOAP] Erro: O titulo é obrigatório.")
+        mostrar_resposta("[SOAP] Erro: O título é obrigatório.")
         return
 
     preco = None
@@ -96,26 +88,15 @@ def modificar_jogo():
             mostrar_resposta("[SOAP] Erro: O preço deve ser um número.")
             return
 
-
-
-
-
-
-
     envelope = ET.Element("Envelope")
     body = ET.SubElement(envelope, "Body")
     req = ET.SubElement(body, "jogoUpdateRequest")
     ET.SubElement(req, "titulo").text = titulo
+
     if desenvolvedora:
         ET.SubElement(req, "desenvolvedora").text = desenvolvedora
-
-
-
     if publicadora:
         ET.SubElement(req, "publicadora").text = publicadora
-
-
-
     if preco is not None:
         ET.SubElement(req, "preco").text = str(preco)
 
@@ -125,12 +106,14 @@ def modificar_jogo():
     try:
         resposta = requests.post(SOAP_URL, data=xml_str, headers=headers)
         if resposta.status_code == 200 and "sucesso" in resposta.text.lower():
-            mostrar_resposta(f"[SOAP] jogo modificado: {titulo}, desenvolvedora: {desenvolvedora}, Preço: {preco}, publicadora: {publicadora}")
+            mostrar_resposta(f"[SOAP] Jogo modificado: {titulo}, desenvolvedora: {desenvolvedora}, preço: {preco}, publicadora: {publicadora}")
         else:
             mostrar_resposta(f"[SOAP] Falha ao modificar jogo: {resposta.text}")
     except Exception as e:
         mostrar_resposta(f"[SOAP] Erro de comunicação: {str(e)}")
+
     limpar_campos()
+
 
 
 
@@ -138,7 +121,7 @@ def modificar_jogo():
 def procurar_jogo():
     titulo = entry_titulo.get().strip()
     if not titulo:
-        mostrar_resposta("[gRPC] Erro: Introduza o titulo do jogo.")
+        mostrar_resposta("[gRPC] Erro: Introduza o título do jogo.")
         return
 
     try:
@@ -147,18 +130,21 @@ def procurar_jogo():
             request = jogo_pb2.jogoRequest(titulo=titulo)
             response = stub.Procurarjogo(request)
 
-            resultado = f"[gRPC] Resultado:\ntitulo: {response.titulo}\ndesenvolvedora: {response.desenvolvedora}\nPreço: {response.preco:.2f}\n Publicadora: {response.publicadora}€"
+            resultado = f"[gRPC] Resultado:\nTítulo: {response.titulo}\nDesenvolvedora: {response.desenvolvedora}\nPreço: {response.preco:.2f}€\nPublicadora: {response.publicadora}"
             mostrar_resposta(resultado)
     except grpc.RpcError as e:
         erro = e.details() if hasattr(e, 'details') else str(e)
         mostrar_resposta(f"[gRPC] Erro: {erro}")
+
     limpar_campos()
 
-# Eliminar jogo via GraphQL
+
+
+
 def eliminar_jogo():
     titulo = entry_titulo.get().strip()
     if not titulo:
-        mostrar_resposta("[GraphQL] Erro: Introduza o titulo do jogo.")
+        mostrar_resposta("[GraphQL] Erro: Introduza o título do jogo.")
         return
 
     query = {
@@ -185,54 +171,56 @@ def eliminar_jogo():
         mostrar_resposta(f"[GraphQL] {resultado['mensagem']}")
     except Exception as e:
         mostrar_resposta(f"[GraphQL] Erro de comunicação: {str(e)}")
+
     limpar_campos()
 
-#==============================================
-# Interface Gráfica (com campos partilhados)
-#==============================================
+
+
+
+
 root = tk.Tk()
-root.title("Cliente jogos - REST, SOAP, gRPC, GraphQL")
+root.title("Cliente Jogos - REST, SOAP, gRPC, GraphQL")
 
 frame = ttk.Frame(root, padding=10)
 frame.pack(fill="both", expand=True)
 
-# Campos comuns
-ttk.Label(frame, text="titulo:").grid(row=0, column=0, sticky="w")
+
+ttk.Label(frame, text="Título:").grid(row=0, column=0, sticky="w")
 entry_titulo = ttk.Entry(frame)
 entry_titulo.grid(row=0, column=1, sticky="ew")
 
-ttk.Label(frame, text="desenvolvedora:").grid(row=1, column=0, sticky="w")
+ttk.Label(frame, text="Desenvolvedora:").grid(row=1, column=0, sticky="w")
 entry_desenvolvedora = ttk.Entry(frame)
 entry_desenvolvedora.grid(row=1, column=1, sticky="ew")
 
-
-
-
-
-ttk.Label(frame, text="publicadora:").grid(row=1, column=0, sticky="w")
+ttk.Label(frame, text="Publicadora:").grid(row=2, column=0, sticky="w")
 entry_publicadora = ttk.Entry(frame)
-entry_publicadora.grid(row=1, column=1, sticky="ew")
+entry_publicadora.grid(row=2, column=1, sticky="ew")
 
-
-
-
-
-ttk.Label(frame, text="Preço:").grid(row=2, column=0, sticky="w")
+ttk.Label(frame, text="Preço:").grid(row=3, column=0, sticky="w")
 entry_preco = ttk.Entry(frame)
-entry_preco.grid(row=2, column=1, sticky="ew")
+entry_preco.grid(row=3, column=1, sticky="ew")
 
-# Botões de ação
-ttk.Button(frame, text="Inserir jogo (REST)", command=enviar_jogo).grid(row=3, column=0, columnspan=2, sticky="ew", pady=2)
-ttk.Button(frame, text="Modificar jogo (SOAP)", command=modificar_jogo).grid(row=4, column=0, columnspan=2, sticky="ew", pady=2)
-ttk.Button(frame, text="Procurar jogo (gRPC)", command=procurar_jogo).grid(row=5, column=0, columnspan=2, sticky="ew", pady=2)
-ttk.Button(frame, text="Eliminar jogo (GraphQL)", command=eliminar_jogo).grid(row=6, column=0, columnspan=2, sticky="ew", pady=2)
 
-# Área de resposta
+
+
+ttk.Button(frame, text="Inserir jogo (REST)", command=enviar_jogo).grid(row=4, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Modificar jogo (SOAP)", command=modificar_jogo).grid(row=5, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Procurar jogo (gRPC)", command=procurar_jogo).grid(row=6, column=0, columnspan=2, sticky="ew", pady=2)
+ttk.Button(frame, text="Eliminar jogo (GraphQL)", command=eliminar_jogo).grid(row=7, column=0, columnspan=2, sticky="ew", pady=2)
+
+
+
+
+
 text_resposta = tk.Text(frame, height=12, wrap="word", state="disabled", bg="#f0f0f0")
-text_resposta.grid(row=7, column=0, columnspan=2, pady=10, sticky="nsew")
+text_resposta.grid(row=8, column=0, columnspan=2, pady=10, sticky="nsew")
 
-# Permitir expansão
+
+
+
+
 frame.columnconfigure(1, weight=1)
-frame.rowconfigure(7, weight=1)
+frame.rowconfigure(8, weight=1)
 
 root.mainloop()
