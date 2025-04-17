@@ -3,8 +3,8 @@ from tkinter import ttk
 import requests
 import xml.etree.ElementTree as ET
 import grpc
-import jogo_pb2
-import jogo_pb2_grpc
+import jogotipo_pb2
+import jogotipo_pb2_grpc
 
 
 SOAP_URL = "http://localhost:8000/soap"
@@ -126,8 +126,8 @@ def procurar_jogo():
 
     try:
         with grpc.insecure_channel(f"{GRPC_HOST}:{GRPC_PORT}") as channel:
-            stub = jogo_pb2_grpc.jogoServiceStub(channel)
-            request = jogo_pb2.jogoRequest(titulo=titulo)
+            stub = jogotipo_pb2_grpc.jogoServiceStub(channel)
+            request = jogotipo_pb2.jogoRequest(titulo=titulo)
             response = stub.Procurarjogo(request)
 
             resultado = f"[gRPC] Resultado:\nTítulo: {response.titulo}\nDesenvolvedora: {response.desenvolvedora}\nPreço: {response.preco:.2f}€\nPublicadora: {response.publicadora}"

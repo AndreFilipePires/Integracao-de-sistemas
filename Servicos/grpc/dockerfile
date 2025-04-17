@@ -4,12 +4,12 @@ WORKDIR /app
 
 COPY necessidades.txt .
 RUN pip install --no-cache-dir -r necessidades.txt
-RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. jogo.proto
+RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. jogotipo.proto
 
-COPY gRPC/servidor_gRPC.py .
-COPY gRPC/jogo.proto .
-COPY gRPC/jogo_pb2.py .
-COPY gRPC/jogo_pb2_grpc.py .
+COPY gRPC/servidor_grcp.py .
+COPY gRPC/jogotipo.proto .
+COPY gRPC/jogotipo_pb2.py .
+COPY gRPC/jogotipo_pb2_grpc.py .
 COPY XML/jogos.xml ./jogos.xml
 
 CMD ["python", "grpc.py"]

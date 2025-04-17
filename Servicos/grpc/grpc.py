@@ -1,8 +1,8 @@
 
 from concurrent import futures
 import grpc
-import jogo_pb2
-import jogo_pb2_grpc
+import jogotipo_pb2
+import jogotipo_pb2_grpc
 import xml.etree.ElementTree as ET
 
 
@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 
 
-class jogoServiceServicer(jogo_pb2_grpc.jogoServiceServicer):
+class jogoServiceServicer(jogotipo_pb2_grpc.jogoServiceServicer):
     def Procurarjogo(self, request, context):
         nome_procurado = request.nome.strip().lower()
 
@@ -23,16 +23,16 @@ class jogoServiceServicer(jogo_pb2_grpc.jogoServiceServicer):
                 if nome.lower() == nome_procurado:
                     autor = jogo.find("autor").text.strip()
                     preco = float(jogo.find("preco").text.strip())
-                    return jogo_pb2.jogoResponse(nome=nome, autor=autor, preco=preco)
+                    return jogotipo_pb2.jogoResponse(nome=nome, autor=autor, preco=preco)
 
             context.set_code(grpc.StatusCode.NOT_FOUND)
             context.set_details("jogo não encontrado.")
-            return jogo_pb2.jogoResponse()
+            return jogotipo_pb2.jogoResponse()
 
         except Exception as e:
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(f"Erro ao ler o XML: {str(e)}")
-            return jogo_pb2.jogoResponse()
+            return jogotipo_pb2.jogoResponse()
 
 
 
@@ -42,7 +42,7 @@ def executar():
   
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
  
-    jogo_pb2_grpc.add_jogoServiceServicer_to_server(jogoServiceServicer(), server)
+    jogotipo_pb2_grpc.add_jogoServiceServicer_to_server(jogoServiceServicer(), server)
   
     server.add_insecure_port('[::]:50051')
    

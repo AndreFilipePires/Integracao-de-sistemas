@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import jogo_pb2 as jogo__pb2
+from Servicos.grpc import jogotipo_pb2 as Servicos_dot_grpc_dot_jogotipo__pb2
 
 GRPC_GENERATED_VERSION = '1.71.0'
 GRPC_VERSION = grpc.__version__
@@ -18,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in jogo_pb2_grpc.py depends on'
+        + f' but the generated code in Servicos/grpc/jogotipo_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class jogoServiceStub(object):
+class JogoServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -34,14 +34,14 @@ class jogoServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Procurarjogo = channel.unary_unary(
-                '/jogoService/Procurarjogo',
-                request_serializer=jogo__pb2.jogoRequest.SerializeToString,
-                response_deserializer=jogo__pb2.jogoResponse.FromString,
+        self.procurarJogo = channel.unary_unary(
+                '/JogoService/procurarJogo',
+                request_serializer=Servicos_dot_grpc_dot_jogotipo__pb2.JogoRequest.SerializeToString,
+                response_deserializer=Servicos_dot_grpc_dot_jogotipo__pb2.JogoResponse.FromString,
                 _registered_method=True)
 
 
-class jogoServiceServicer(object):
+class JogoServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def procurarJogo(self, request, context):
@@ -51,26 +51,26 @@ class jogoServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_jogoServiceServicer_to_server(servicer, server):
+def add_JogoServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Procurarjogo': grpc.unary_unary_rpc_method_handler(
-                    servicer.Procurarjogo,
-                    request_deserializer=jogo__pb2.jogoRequest.FromString,
-                    response_serializer=jogo__pb2.jogoResponse.SerializeToString,
+            'procurarJogo': grpc.unary_unary_rpc_method_handler(
+                    servicer.procurarJogo,
+                    request_deserializer=Servicos_dot_grpc_dot_jogotipo__pb2.JogoRequest.FromString,
+                    response_serializer=Servicos_dot_grpc_dot_jogotipo__pb2.JogoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'jogoService', rpc_method_handlers)
+            'JogoService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('jogoService', rpc_method_handlers)
+    server.add_registered_method_handlers('JogoService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class jogoService(object):
+class JogoService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Procurarjogo(request,
+    def procurarJogo(request,
             target,
             options=(),
             channel_credentials=None,
@@ -83,9 +83,9 @@ class jogoService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/jogoService/Procurarjogo',
-            jogo__pb2.jogoRequest.SerializeToString,
-            jogo__pb2.jogoResponse.FromString,
+            '/JogoService/procurarJogo',
+            Servicos_dot_grpc_dot_jogotipo__pb2.JogoRequest.SerializeToString,
+            Servicos_dot_grpc_dot_jogotipo__pb2.JogoResponse.FromString,
             options,
             channel_credentials,
             insecure,
