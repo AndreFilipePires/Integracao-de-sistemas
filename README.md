@@ -24,3 +24,5 @@ graphene
 protobuf
 setuptools
 tk
+
+Link para o vídeo do projeto a funcionar: https://www.youtube.com/watch?v=vOeA-D9e0wA&ab_channel=Anpi
