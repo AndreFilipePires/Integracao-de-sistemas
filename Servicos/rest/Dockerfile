@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY Servicos/necessidades.txt .
+COPY necessidades.txt .
 RUN pip install --no-cache-dir -r necessidades.txt
 
 COPY rest/rest.py .
